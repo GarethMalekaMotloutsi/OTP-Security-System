@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const generateOtp = require("./otp");
 const config = require("./config");
 const otpStore = require("./otpStore");
@@ -83,7 +84,7 @@ otpStore.push(newOtp);
 });
 
 app.get("/", (req, res) => {
-    res.send("OTP Security System");
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(port, () => {
