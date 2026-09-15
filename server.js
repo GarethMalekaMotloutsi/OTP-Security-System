@@ -23,7 +23,8 @@ app.post("/api/otp/send", async (req, res) => {
 
     const now = Date.now();
 
-    const existingOtp = otpStore.find(item => item.email === email);
+const userOtps = otpStore.filter(item => item.email === email);
+const existingOtp = userOtps[userOtps.length - 1];
 
 const requestTimes = otpStore
     .filter(item => item.email === email)
@@ -43,17 +44,25 @@ if (existingOtp && now - existingOtp.createdAt < config.resendWindow * 60 * 1000
         });
     }
 
-    existingOtp.expiresAt = now + config.otpExpiry * 1000;
-    existingOtp.resendCount += 1;
-    existingOtp.requestTimes.push(now);
+existingOtp.expiresAt = now + config.otpExpiry * 1000;
+existingOtp.resendCount += 1;
+existingOtp.requestTimes.push(now);
+
+try {
+    await sendOtpEmail(email, existingOtp.otp);
 
     return res.json({
         message: "OTP resent",
         email: email
     });
+} catch (error) {
+    console.log("Email error:", error.message);
+
+    return res.status(500).json({
+        message: "Failed to resend OTP email"
+    });
 }
-
-
+}
 let otp = generateOtp();
 
 while (
@@ -95,6 +104,7 @@ try {
         });
     }
 });
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
