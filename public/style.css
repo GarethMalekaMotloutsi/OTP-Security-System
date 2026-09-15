@@ -194,3 +194,27 @@ body {
         flex-direction: column;
     }
 }
+
+#notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    max-width: 320px;
+    padding: 14px 18px;
+    border: 1px solid #303136;
+    border-radius: 12px;
+    background: #f5f5f7;
+    color: #111216; 
+    font-size: 13px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#notification.show {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
