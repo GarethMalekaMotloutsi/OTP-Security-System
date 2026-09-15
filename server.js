@@ -7,6 +7,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(express.static("public"));
 
 app.post("/api/otp/send", (req, res) => {
     const { email } = req.body;
