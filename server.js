@@ -105,6 +105,49 @@ try {
     }
 });
 
+app.post("/api/otp/verify", (req, res) => {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+        return res.status(400).json({
+            message: "Email and OTP are required"
+        });
+    }
+
+    const userOtps = otpStore.filter(item => item.email === email);
+    const existingOtp = userOtps[userOtps.length - 1];
+
+    if (!existingOtp) {
+        return res.status(404).json({
+            message: "No OTP found"
+        });
+    }
+
+    if (existingOtp.used) {
+        return res.status(400).json({
+            message: "OTP has already been used"
+        });
+    }
+
+    if (Date.now() > existingOtp.expiresAt) {
+        return res.status(400).json({
+            message: "OTP has expired"
+        });
+    }
+
+    if (existingOtp.otp !== otp) {
+        return res.status(400).json({
+            message: "Invalid OTP"
+        });
+    }
+
+    existingOtp.used = true;
+
+    return res.json({
+        message: "OTP verified successfully"
+    });
+});
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
