@@ -1,8 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const generateOtp = require("./otp");
 const config = require("./config");
 const otpStore = require("./otpStore");
+const sendOtpEmail = require("./email");
 
 const app = express();
 const port = 3000;
@@ -10,7 +12,7 @@ const port = 3000;
 app.use(express.json());
 app.use(express.static("public"));
 
-app.post("/api/otp/send", (req, res) => {
+app.post("/api/otp/send", async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
@@ -77,12 +79,22 @@ const newOtp = {
 
 otpStore.push(newOtp);
 
+try {
+    await sendOtpEmail(email, otp);
+
     res.json({
-        message: "OTP request received",
+        message: "OTP sent successfully",
         email: email
     });
-});
 
+    } catch (error) {
+        console.log("Email error:", error.message);
+
+        res.status(500).json({
+            message: "Failed to send OTP email"
+        });
+    }
+});
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
