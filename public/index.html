@@ -4,39 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Security System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>OTP Security System</h1>
+    <main class="app">
 
-    <section>
-        <h2>Send OTP</h2>
+        <header class="app-header">
+            <div class="status">
+                <span class="status-dot"></span>
+                SECURE CHANNEL
+            </div>
 
-        <label for="sendEmail">Email:</label>
-        <input type="email" id="sendEmail" placeholder="Enter your email">
+            <h1>OTP Security System</h1>
 
-        <button id="sendOtp">Send OTP</button>
-        <button id="resendOtp">Resend OTP</button>
-    </section>
+            <p class="intro">
+                Secure one-time verification, delivered directly to your inbox.
+            </p>
+        </header>
 
-    <section>
-        <h2>Verify OTP</h2>
+        <div class="security-grid">
 
-        <label for="verifyEmail">Email:</label>
-        <input type="email" id="verifyEmail" placeholder="Enter your email">
+            <section class="card">
+                <div class="card-header">
+                    <span class="card-number">01</span>
+                    <h2>Send OTP</h2>
+                </div>
 
-        <label for="otp">OTP:</label>
-        <input
-            type="text"
-            id="otp"
-            maxlength="6"
-            placeholder="Enter 6-digit OTP"
-        >
+                <p class="card-description">
+                    Request a one-time verification code using your email address.
+                </p>
 
-        <button id="verifyOtp">Verify OTP</button>
-    </section>
+                <label for="sendEmail">Email address</label>
 
-    <p id="message"></p>
+                <input
+                    type="email"
+                    id="sendEmail"
+                    placeholder="you@example.com"
+                >
+
+                <div class="button-row">
+                    <button id="sendOtp">Send OTP</button>
+                    <button id="resendOtp" class="secondary-button">Resend</button>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-header">
+                    <span class="card-number">02</span>
+                    <h2>Verify OTP</h2>
+                </div>
+
+                <p class="card-description">
+                    Enter the six-digit code sent to your email address.
+                </p>
+
+                <label for="verifyEmail">Email address</label>
+
+                <input
+                    type="email"
+                    id="verifyEmail"
+                    placeholder="you@example.com"
+                >
+
+                <label for="otp">Verification code</label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    maxlength="6"
+                    inputmode="numeric"
+                    placeholder="000000"
+                >
+
+                <button id="verifyOtp" class="verify-button">
+                    Verify Code
+                </button>
+            </section>
+
+        </div>
+
+        <footer class="app-footer">
+            <span>OTP SECURITY</span>
+            <span>6 DIGITS · TIME LIMITED</span>
+        </footer>
+
+        <p id="message"></p>
+
+    </main>
 
 </body>
 </html>
